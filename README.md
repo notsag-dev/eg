@@ -1,4 +1,4 @@
-# toolz
+# toolz 🛠️
 Reconnaissance tool that lists open source (free software preferred) tools to interact with well-know services and protocols.
 
 ## Use
