@@ -1,5 +1,5 @@
 # toolz
-Get a list of open source (free software preferred) tools to list information about services/protocols and interact with them.
+Reconnaissance tool that lists open source (free software preferred) tools to interact with well-know services and protocols.
 
 ## Use
 To look for dns tools, run:
@@ -13,4 +13,4 @@ python3 toolz.py --nmap/-n file.nmap
 ```
 
 ## Licence
-GPLv3
+GPLv3.
