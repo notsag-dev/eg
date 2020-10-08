@@ -1,0 +1,3 @@
+{
+  "dns":["nslookup", "dnsrecon", "dnsmap", "dig"]
+}

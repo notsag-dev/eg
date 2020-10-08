@@ -1,0 +1,24 @@
+{
+  "nslookup": {
+    "description": "Query Internet name servers interactively",
+    "examples": [
+       {
+         "title": "placeholder",
+         "description": "placeholder",
+         "command": "placeholder"
+       } 
+    ]
+  },
+  "dnsrecon": {
+    "description": "DNS Enumeration and Scanning Tool",
+    "examples": []
+  },
+  "dnsmap": {
+    "description": "DNS Network Mapper",
+    "examples": []
+  },
+  "dig": {
+    "description": "DNS lookup utility",
+    "examples": []
+  }
+}
