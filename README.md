@@ -1,5 +1,5 @@
 # toolz 🔨
-Reconnaissance tool that lists open source (free software preferred) tools to interact with well-know services and protocols.
+Reconnaissance tool that lists open source tools to interact with well-know services and protocols.
 
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that many people can do small contributions to build its database.
