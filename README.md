@@ -1,5 +1,5 @@
-# toolz 🔨
-Reconnaissance tool that lists open source tools to discover/interact with/exploit well-know services and protocols.
+# Toolz 🔨
+Search tools to discover or interact with well-know services and protocols, and navigate/run cheat-sheet examples directly from it.
 
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that many people can do small contributions to build its database.
