@@ -20,6 +20,27 @@ class Toolz:
             return
         return self.tools_per_service[service]
 
+    def print_tools_per_service(self, service):
+        print(f'{Color.BOLD}Results for {service}:{Color.END}')
+        self.tools_result_list = self.get_tools_per_service(service)
+        if self.tools_result_list is None:
+            print("Ouch! No tools found")
+            return
+
+        for ind, tool in enumerate(self.tools_result_list):
+            tool_info = self.get_tool_info(tool)
+            print(f'{ind + 1}) {tool}: {tool_info["description"]}')
+
+    def print_tool_info(self, tool_ind):
+        self.service = self.tools_result_list[int(tool_ind) - 1]
+        print(f'{Color.BOLD}Examples for {self.service}\n{Color.END}')
+        self.tool_info = self.get_tool_info(self.service)
+        for ind, example in enumerate(self.tool_info["examples"]):
+            print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
+            print(example["description"] + "\n")
+            print(example["command"])
+            print("-------")
+
     def get_tool_info(self, tool):
         if tool not in self.tools_info:
             return
@@ -29,28 +50,18 @@ def print_help():
     print("TODO HELP")
 
 def main():
-    print("\n<--T00LZ-->\n")
+    print(f'\n{Color.BOLD}<--T00LZ-->{Color.END}\n')
 
-    toolz = Toolz()
     if (len(sys.argv) != 2):
         print_help()
-
-    tools_list = toolz.get_tools_per_service(sys.argv[1])
-    if tools_list is None:
-        print("Ouch! No tools found")
         return
 
-    for ind, tool in enumerate(tools_list):
-        tool_info = toolz.get_tool_info(tool)
-        print(f'{ind + 1}) {tool}: {tool_info["description"]}')
-
-    tool_ind = input("\nPlease enter tool index: ")
+    toolz = Toolz()
+    toolz.print_tools_per_service(sys.argv[1])
+    tool_ind = input("\nEnter tool index: ")
     print()
-    info = toolz.get_tool_info(tools_list[int(tool_ind) - 1])
-    for ind, example in enumerate(info["examples"]):
-        print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
-        print(example["description"] + "\n")
-        print(example["command"])
-        print("-------")
+    toolz.print_tool_info(tool_ind)
+
+    example_ind = input("\nEnter example index: ")
 
 main()

@@ -3,9 +3,9 @@
     "description": "Query Internet name servers interactively",
     "examples": [
        {
-         "title": "placeholder",
-         "description": "placeholder",
-         "command": "placeholder"
+         "title": "title",
+         "description": "description",
+         "command": "nslookup {{url}}"
        } 
     ]
   },
