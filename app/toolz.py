@@ -1,5 +1,7 @@
 import json
+import re
 import sys
+import os
 from color import Color
 
 class Toolz:
@@ -32,9 +34,9 @@ class Toolz:
             print(f'{ind + 1}) {tool}: {tool_info["description"]}')
 
     def print_tool_info(self, tool_ind):
-        self.service = self.tools_result_list[int(tool_ind) - 1]
-        print(f'{Color.BOLD}Examples for {self.service}\n{Color.END}')
-        self.tool_info = self.get_tool_info(self.service)
+        self.service_name = self.tools_result_list[int(tool_ind) - 1]
+        print(f'{Color.BOLD}Examples for {self.service_name}\n{Color.END}')
+        self.tool_info = self.get_tool_info(self.service_name)
         for ind, example in enumerate(self.tool_info["examples"]):
             print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
             print(example["description"] + "\n")
@@ -45,6 +47,19 @@ class Toolz:
         if tool not in self.tools_info:
             return
         return self.tools_info[tool]
+
+    def run_example(self, example_ind):
+        self.example = self.tool_info["examples"][int(example_ind) - 1]
+        command = self.example["command"]
+        pattern = '\{\{(.*?)\}\}'
+        params = re.findall(pattern, command)
+        print(f'{Color.BOLD}{Color.BLUE}\nSet parameters:\n{Color.END}')
+        param_values = []
+        for param in params:
+            param_value = input(f'{Color.BLUE}{param}: {Color.END}')
+            command = command.replace(f'{{{{{param}}}}}', param_value)
+        print(f'{Color.BOLD}\n${Color.END} {command}')
+        os.system(command)
     
 def print_help():
     print("TODO HELP")
@@ -63,5 +78,6 @@ def main():
     toolz.print_tool_info(tool_ind)
 
     example_ind = input("\nEnter example index: ")
+    toolz.run_example(example_ind)
 
 main()

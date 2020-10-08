@@ -5,7 +5,7 @@
        {
          "title": "title",
          "description": "description",
-         "command": "nslookup {{url}}"
+         "command": "nslookup {{url}} {{ajjja}}"
        } 
     ]
   },
