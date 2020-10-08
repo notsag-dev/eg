@@ -16,4 +16,4 @@ python3 toolz.py --nmap/-n file.nmap
 ```
 
 ## Licence
-GPLv3.
+GPL-3.0
