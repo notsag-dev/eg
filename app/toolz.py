@@ -24,24 +24,26 @@ class Toolz:
         return self.tools_per_service[service]
 
     def print_tools_per_service(self, service):
-        print(f'{Color.BOLD}Results for {service}:{Color.END}')
         self.tools_result_list = self.get_tools_per_service(service)
         if self.tools_result_list is None:
-            print("Ouch! No tools found")
-            return
+            print(f'{Color.YELLOW}\nOuch! No tools found for {service}\n{Color.END}')
+            return None
 
+        print(f'{Color.BOLD}\nResults for {service}:{Color.END}')
         for ind, tool in enumerate(self.tools_result_list):
             tool_info = self.get_tool_info(tool)
             available = which(tool) is not None
             print(f'{ind + 1}) {Color.GREEN if available else Color.RED}{tool}{Color.END}: {tool_info["description"]}')
 
+        return self.tools_result_list
+
     def print_tool_info(self, tool_ind):
-        self.service_name = self.tools_result_list[int(tool_ind) - 1]
+        self.service_name = self.tools_result_list[tool_ind - 1]
         self.tool_info = self.get_tool_info(self.service_name)
         examples = self.tool_info["examples"]
         if examples is None or len(examples) == 0:
-            print(f'{Color.RED}No examples found for {self.service_name}!!!\n{Color.END}')
-            return False
+            print(f'{Color.YELLOW}No examples found for {self.service_name}!!!{Color.END}')
+            return None
 
         print(f'{Color.BOLD}Examples for {self.service_name}:\n{Color.END}')
         for ind, example in enumerate(self.tool_info["examples"]):
@@ -50,7 +52,8 @@ class Toolz:
                 print(example["description"] + "\n")
             print(example["command"])
             print("-------")
-        return True
+
+        return self.tool_info["examples"]
 
     def get_tool_info(self, tool):
         if tool not in self.tools_info:
@@ -75,7 +78,7 @@ def print_help():
     print("TODO HELP")
 
 def main():
-    print(f'\n{Color.BOLD}{Color.RED}<-----T00LZ----->{Color.END}\n')
+    print(f'\n{Color.BOLD}{Color.RED}<-----T00LZ----->{Color.END}')
 
     if (len(sys.argv) != 2):
         print_help()
@@ -83,22 +86,38 @@ def main():
 
     search = sys.argv[1]
     toolz = Toolz()
+    tool_ind = None
     while True:
-        toolz.print_tools_per_service(search)
+        found_tools = toolz.print_tools_per_service(search)
+        if not found_tools:
+            search = None
+            while not search:
+                search = input("Search for tool or service: ")
+            continue
+
         tool_ind = input("\nEnter tool index: ")
+        if tool_ind:
+            while not tool_ind.isdigit() or int(tool_ind) > len(found_tools):
+                tool_ind = input("\nEnter tool index: ")
+                if not tool_ind:
+                    continue
         print()
-        found_examples = toolz.print_tool_info(tool_ind)
+
+        if not tool_ind:
+            old_search = search
+            search = input("Search for tool or service: ")
+            if not search:
+               search = old_search
+            continue
+
+        found_examples = toolz.print_tool_info(int(tool_ind))
         if not found_examples:
-            continue 
+            continue
 
         example_ind = input("\nEnter example run: ")
         if not example_ind:
             continue
 
         toolz.run_example(example_ind)
-        old_search = search
-        search = input("Enter keyword: ")
-        if not search:
-            search = old_search
 
 main()
