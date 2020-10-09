@@ -3,6 +3,7 @@ import re
 import sys
 import os
 from color import Color
+from shutil import which
 
 class Toolz:
     def __init__(self):
@@ -31,17 +32,25 @@ class Toolz:
 
         for ind, tool in enumerate(self.tools_result_list):
             tool_info = self.get_tool_info(tool)
-            print(f'{ind + 1}) {tool}: {tool_info["description"]}')
+            available = which(tool) is not None
+            print(f'{ind + 1}) {Color.GREEN if available else Color.RED}{tool}{Color.END}: {tool_info["description"]}')
 
     def print_tool_info(self, tool_ind):
         self.service_name = self.tools_result_list[int(tool_ind) - 1]
-        print(f'{Color.BOLD}Examples for {self.service_name}\n{Color.END}')
         self.tool_info = self.get_tool_info(self.service_name)
+        examples = self.tool_info["examples"]
+        if examples is None or len(examples) == 0:
+            print(f'{Color.RED}No examples found for {self.service_name}!!!\n{Color.END}')
+            return False
+
+        print(f'{Color.BOLD}Examples for {self.service_name}:\n{Color.END}')
         for ind, example in enumerate(self.tool_info["examples"]):
             print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
-            print(example["description"] + "\n")
+            if example["description"]:
+                print(example["description"] + "\n")
             print(example["command"])
             print("-------")
+        return True
 
     def get_tool_info(self, tool):
         if tool not in self.tools_info:
@@ -51,9 +60,10 @@ class Toolz:
     def run_example(self, example_ind):
         self.example = self.tool_info["examples"][int(example_ind) - 1]
         command = self.example["command"]
-        pattern = '\{\{(.*?)\}\}'
-        params = re.findall(pattern, command)
-        print(f'{Color.BOLD}{Color.BLUE}\nSet parameters:\n{Color.END}')
+        param_pattern = '\{\{(.*?)\}\}'
+        params_with_duplicates = re.findall(param_pattern, command)
+        params = list(set(params_with_duplicates))
+        print(f'{Color.BOLD}\nSet parameters:\n{Color.END}')
         param_values = []
         for param in params:
             param_value = input(f'{Color.BLUE}{param}: {Color.END}')
@@ -65,19 +75,30 @@ def print_help():
     print("TODO HELP")
 
 def main():
-    print(f'\n{Color.BOLD}<--T00LZ-->{Color.END}\n')
+    print(f'\n{Color.BOLD}{Color.RED}<-----T00LZ----->{Color.END}\n')
 
     if (len(sys.argv) != 2):
         print_help()
         return
 
+    search = sys.argv[1]
     toolz = Toolz()
-    toolz.print_tools_per_service(sys.argv[1])
-    tool_ind = input("\nEnter tool index: ")
-    print()
-    toolz.print_tool_info(tool_ind)
+    while True:
+        toolz.print_tools_per_service(search)
+        tool_ind = input("\nEnter tool index: ")
+        print()
+        found_examples = toolz.print_tool_info(tool_ind)
+        if not found_examples:
+            continue 
 
-    example_ind = input("\nEnter example index: ")
-    toolz.run_example(example_ind)
+        example_ind = input("\nEnter example run: ")
+        if not example_ind:
+            continue
+
+        toolz.run_example(example_ind)
+        old_search = search
+        search = input("Enter keyword: ")
+        if not search:
+            search = old_search
 
 main()

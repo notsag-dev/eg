@@ -2,23 +2,47 @@
   "nslookup": {
     "description": "Query Internet name servers interactively",
     "examples": [
-       {
-         "title": "title",
-         "description": "description",
-         "command": "nslookup {{url}} {{ajjja}}"
-       } 
-    ]
-  },
-  "dnsrecon": {
-    "description": "DNS Enumeration and Scanning Tool",
-    "examples": []
-  },
-  "dnsmap": {
-    "description": "DNS Network Mapper",
-    "examples": []
+      {
+        "title": "Query A records",
+        "description": "",
+        "command": "nslookup {{RHOST}}" 
+      },
+      {
+        "title": "Query NS records",
+        "description": "",
+        "command": "nslookup -type=ns {{RHOST}}"
+      },
+      {
+        "title": "Query MX records",
+        "description": "",
+        "command": "nslookup -query=mx {{RHOST}}"
+      },
+      {
+        "title": "Query all available DNS records",
+        "description": "",
+        "command": "nslookup -type=any {{RHOST}}"
+      }
+    ],
+    "keywords": ["dns"]
   },
   "dig": {
     "description": "DNS lookup utility",
-    "examples": []
+    "examples": [],
+    "keywords": ["dns"]
+  },
+  "dnsrecon": {
+    "description": "DNS Enumeration and Scanning Tool",
+    "examples": [],
+    "keywords": ["dns"]
+  },
+  "dnsmap": {
+    "description": "DNS Network Mapper",
+    "examples": [],
+    "keywords": ["dns"]
+  },
+  "nmap": {
+    "description": "Network exploration tool and security / port scanner",
+    "examples": [],
+    "keywords": ["net", "network", "networking", "map"]
   }
 }
