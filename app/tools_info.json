@@ -15,7 +15,7 @@
       {
         "title": "Query MX records",
         "description": "",
-        "command": "nslookup -query=mx {{RHOST}}"
+        "command": "nslookup -type=mx {{RHOST}}"
       },
       {
         "title": "Query all available DNS records",
