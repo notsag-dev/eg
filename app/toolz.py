@@ -9,6 +9,7 @@ class Toolz:
     def __init__(self):
         self.tools_per_service = self.load_tools_per_service()
         self.tools_info = self.load_tools_info()
+        self.params_cache = {}
      
     def load_tools_per_service(self):
         with open('tools_per_service.json') as tools:
@@ -69,7 +70,14 @@ class Toolz:
         print(f'{Color.BOLD}\nSet parameters:\n{Color.END}')
         param_values = []
         for param in params:
-            param_value = input(f'{Color.BLUE}{param}: {Color.END}')
+            cached = None
+            if param in self.params_cache:
+                cached = self.params_cache[param]
+            param_value = input(f'{Color.BLUE}{param}{"(" + cached + ")" if cached else ""}: {Color.END}')
+            if param_value:
+                self.params_cache[param] = param_value
+            if not param_value and cached:
+                param_value = cached
             command = command.replace(f'{{{{{param}}}}}', param_value)
         print(f'{Color.BOLD}\n${Color.END} {command}')
         os.system(command)
@@ -110,14 +118,18 @@ def main():
                search = old_search
             continue
 
-        found_examples = toolz.print_tool_info(int(tool_ind))
-        if not found_examples:
-            continue
+        on_examples = True
+        while on_examples:
+            found_examples = toolz.print_tool_info(int(tool_ind))
+            if not found_examples:
+                on_examples = False
+                continue
 
-        example_ind = input("\nEnter example run: ")
-        if not example_ind:
-            continue
+            example_ind = input("\nEnter example to run: ")
+            if not example_ind:
+                on_examples = False
+                continue
 
-        toolz.run_example(example_ind)
+            toolz.run_example(example_ind)
 
 main()
