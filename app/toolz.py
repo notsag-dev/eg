@@ -12,7 +12,7 @@ class Toolz:
         self.params_cache = {}
      
     def load_tools_per_service(self):
-        with open('tools_per_service.json') as tools:
+        with open('tools_per_keyword.json') as tools:
             return json.load(tools)
 
     def load_tools_info(self):
