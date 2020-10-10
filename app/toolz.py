@@ -54,12 +54,15 @@ class Toolz:
         print(f'{Color.BOLD}Examples for {self.service_name}:\n{Color.END}')
         for ind, example in enumerate(self.tool_info["examples"]):
             print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
-            if example["description"]:
+            if example.get("description"):
                 print(example["description"] + "\n")
             print(example["command"])
             print("-------")
 
-        return self.tool_info["examples"]
+        if not self.tool_info.get("available"):
+            print(f'{Color.YELLOW}\nInstall {self.service_name} to run examples!!!{Color.END}')
+
+        return self.tool_info
 
     def get_tool_info(self, tool):
         if tool not in self.tools_info:
@@ -78,7 +81,7 @@ class Toolz:
             cached = None
             if param in self.params_cache:
                 cached = self.params_cache[param]
-            param_value = input(f'{Color.BLUE}{param}{"(" + cached + ")" if cached else ""}: {Color.END}')
+            param_value = input(f'{Color.BLUE}{param}{" (" + cached + ")" if cached else ""}: {Color.END}')
             if param_value:
                 self.params_cache[param] = param_value
             if not param_value and cached:
@@ -91,7 +94,7 @@ def print_help():
     print("TODO HELP")
 
 def main():
-    print(f'\n{Color.BOLD}{Color.RED}<-----T00LZ----->{Color.END}')
+    print(f'{Color.BOLD}\n----T00LZ----{Color.END}')
 
     if (len(sys.argv) != 2):
         print_help()
@@ -125,8 +128,8 @@ def main():
 
         on_examples = True
         while on_examples:
-            found_examples = toolz.print_tool_info(int(tool_ind))
-            if not found_examples:
+            tool = toolz.print_tool_info(int(tool_ind))
+            if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
                 on_examples = False
                 continue
 
