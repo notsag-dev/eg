@@ -1,5 +1,5 @@
-# Toolz 🔨
-Search for tools and cheat-sheet examples to interact with well-know services and protocols. 
+# eg
+Productivity app to search for cli tools and run cheat-sheet examples. 
 
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that many people can do small contributions to build its database.
