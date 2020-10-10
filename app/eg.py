@@ -1,12 +1,12 @@
 import json
+import os
 import re
 import sys
-import os
 from color import Color
 from shutil import which
 from get_tools_per_keyword import get_tools_per_keyword
 
-class Toolz:
+class Eg:
     def __init__(self):
         self.tools_info = self.load_tools_info()
         self.tools_per_keyword = get_tools_per_keyword(self.tools_info)
@@ -94,17 +94,19 @@ def print_help():
     print("TODO HELP")
 
 def main():
-    print(f'{Color.BOLD}\n----T00LZ----{Color.END}')
+    print(f'{Color.BOLD}\n------------------------{Color.END}')
+    print(f'--- {Color.BOLD}eg {Color.END}by notsag-dev ---')
+    print(f'{Color.BOLD}------------------------{Color.END}')
 
     if (len(sys.argv) != 2):
         print_help()
         return
 
     search = sys.argv[1]
-    toolz = Toolz()
+    eg = Eg()
     tool_ind = None
     while True:
-        found_tools = toolz.print_tools_per_keyword(search)
+        found_tools = eg.print_tools_per_keyword(search)
         if not found_tools:
             search = None
             while not search:
@@ -128,7 +130,7 @@ def main():
 
         on_examples = True
         while on_examples:
-            tool = toolz.print_tool_info(int(tool_ind))
+            tool = eg.print_tool_info(int(tool_ind))
             if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
                 on_examples = False
                 continue
@@ -138,6 +140,6 @@ def main():
                 on_examples = False
                 continue
 
-            toolz.run_example(example_ind)
+            eg.run_example(example_ind)
 
 main()
