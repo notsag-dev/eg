@@ -42,7 +42,16 @@
   },
   "nmap": {
     "description": "Network exploration tool and security / port scanner",
-    "examples": [],
+    "examples": [
+      {
+        "title": "Aggressive: Standard scripts, OS and versions detection",
+        "command": "nmap -A {{RHOST}}"
+      },
+      {
+        "title": "Scan all 65535 ports",
+        "command": "nmap -p- {{RHOST}}"
+      }
+    ],
     "keywords": ["net", "network", "networking", "map"]
   }
 }
