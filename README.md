@@ -2,7 +2,7 @@
 Search for cli tools and run cheat-sheet examples. 
 
 ## Hacktoberfest
-This project was created in the context of Hacktoberfest 2020 so that many people can do small contributions to build its database.
+This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
 
 ## Use
 To look for dns tools, run:
