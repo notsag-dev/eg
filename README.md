@@ -37,7 +37,7 @@ $ eg -h
 ### Add new cheat sheet examples
 Add them to `app/tools_info.json`. Remember to also add some keywords to them so that they are retrieved when searching by keywords.
 
-The examples may have parameters which will be asked for when executed. Add parameters using double curly braces, for example:
+The examples may have parameters which will be asked for when being executed. Add parameters using double curly braces, for example:
 
 `find . -name {{keyword}}`
 
