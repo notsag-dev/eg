@@ -46,7 +46,7 @@ class Eg:
         if exact_match:
             search_matches_list = [exact_match] + search_matches_list
 
-        print(f'{Color.BOLD}\nResults for {keyword}:{Color.END}')
+        print(f'{Color.BOLD}\nResults for {keyword}:\n{Color.END}')
         sorted_tool_info_list = sorted(search_matches_list, key=lambda t: t["available"], reverse = True)
         for ind, tool in enumerate(sorted_tool_info_list):
             print(f'{ind + 1}) {Color.GREEN if tool.get("available") else Color.RED}{tool.get("name")}{Color.END}: {tool.get("description")}')
@@ -118,11 +118,14 @@ def main():
     print(f'------ {Color.BOLD}eg{Color.END} ------')
     print(f'{Color.BOLD}----------------{Color.END}')
 
-    if (len(sys.argv) != 2):
+    if (len(sys.argv) > 2):
         print_help()
         return
 
-    search = sys.argv[1]
+    search = None
+    if len(sys.argv) == 2:
+        search = sys.argv[1]
+
     eg = Eg()
     exact_match = False
     while True:
