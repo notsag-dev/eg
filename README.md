@@ -100,7 +100,7 @@ Name:	google.com
 Address: 172.217.172.46
 ```
 
-### Example searching by tool name
+### Example: search by tool name
 When searching by tool name the tool selection is done automatically:
 ```
 $ eg nmap
