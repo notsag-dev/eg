@@ -36,7 +36,7 @@ class Eg:
             exact_match.update({ "exact_match": True });
         search_matches_list = self.search_tools_per_keyword(keyword)
         if exact_match == None and len(search_matches_list) == 0:
-            print(f'{Color.YELLOW}\nNo tools found for keyword {keyword}\n{Color.END}')
+            print(f'{Color.YELLOW}No tools found for keyword {keyword}\n{Color.END}')
             return []
 
         if len(search_matches_list) == 0 and exact_match:
@@ -116,7 +116,7 @@ def example_input():
 def main():
     print(f'{Color.BOLD}\n----------------{Color.END}')
     print(f'------ {Color.BOLD}eg{Color.END} ------')
-    print(f'{Color.BOLD}----------------{Color.END}')
+    print(f'{Color.BOLD}----------------\n{Color.END}')
 
     if (len(sys.argv) > 2):
         print_help()
@@ -179,4 +179,12 @@ def main():
 
             eg.run_example(example_ind)
 
-main()
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('\nGoodbye!')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
