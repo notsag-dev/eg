@@ -21,6 +21,8 @@ There is no need for installing any extra tools. I would recommend, though, to a
 
 `alias eg="python3 /path/to/eg/repo/app/eg.py"`
 
+By doing this, it is possible to run `eg keyword` insted of `python3 eg.py keyword`.
+
 ## Use
 ### Print help
 ```
