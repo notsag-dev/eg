@@ -13,7 +13,7 @@ The main motivations for creating this project are:
 This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
 
 ## Dependencies
-The only dependency of this project is python 3.
+The only dependency of this project is Python 3. It is true that for actually running cheat sheet examples the involved tools have to be installed, but as it would be a bit intrusive to require to do so, the script will just print installed tools in green and non-installed ones in red.
 
 ## Install
 There is no need for installing any extra tools. I would recommend, though, to add an alias to execute it in a simpler way:
