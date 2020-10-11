@@ -153,7 +153,24 @@ class Eg:
             self.run_example(user_input_example_selection)
     
 def print_help():
-    print("TODO HELP")
+    print(f'''
+    {Color.BOLD}NAME{Color.END}
+        eg -- Interactive tool to search and run cheat-sheet examples
+
+    {Color.BOLD}SYNOPSIS{Color.END}
+        {Color.BOLD}eg{Color.END} [keyword]
+
+    {Color.BOLD}EXAMPLES{Color.END}
+        # Search for tools related to dns
+        python eg.py dns
+
+        # Directly access nmap examples
+        python eg.py nmap
+
+        # Access the interactive app
+        python eg.py
+    ''')
+
 
 def get_user_input_search(default = None):
     default_value_string = ""
@@ -185,11 +202,15 @@ def banner():
     print(f'{Color.BOLD}----------------\n{Color.END}')
 
 def main():
-    banner()
-
     if (len(sys.argv) > 2):
         print_help()
         return
+
+    if ("--help" in sys.argv or "-h" in sys.argv):
+        print_help()
+        return
+
+    banner()
 
     search = None
     if len(sys.argv) == 2:
