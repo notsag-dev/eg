@@ -31,20 +31,20 @@ class Eg:
         return result;
 
     def print_tools_per_keyword(self, keyword):
-        exact_match = self.tools_info.get(keyword)
-        if (exact_match):
-            exact_match.update({ "exact_match": True });
+        search_exact_match = self.tools_info.get(keyword)
+        if (search_exact_match):
+            search_exact_match.update({ "exact_match": True });
         search_matches_list = self.search_tools_per_keyword(keyword)
-        if exact_match == None and len(search_matches_list) == 0:
+        if search_exact_match == None and len(search_matches_list) == 0:
             print(f'{Color.YELLOW}No tools found for keyword {keyword}\n{Color.END}')
             return []
 
-        if len(search_matches_list) == 0 and exact_match:
-            self.tools_result_list = [exact_match]
+        if len(search_matches_list) == 0 and search_exact_match:
+            self.tools_result_list = [search_exact_match]
             return self.tools_result_list
 
-        if exact_match:
-            search_matches_list = [exact_match] + search_matches_list
+        if search_exact_match:
+            search_matches_list = [search_exact_match] + search_matches_list
 
         print(f'{Color.BOLD}Results for {keyword}:\n{Color.END}')
         sorted_tool_info_list = sorted(search_matches_list, key=lambda t: t["available"], reverse = True)
@@ -54,8 +54,8 @@ class Eg:
 
         return sorted_tool_info_list
 
-    def print_tool_info(self, tool_ind):
-        self.tool_info = self.tools_result_list[tool_ind - 1]
+    def print_tool_info(self, selected_tool_index):
+        self.tool_info = self.tools_result_list[selected_tool_index - 1]
         self.service_name = self.tool_info.get("name")
         examples = self.tool_info["examples"]
         if examples is None or len(examples) == 0:
@@ -74,11 +74,6 @@ class Eg:
             print(f'{Color.YELLOW}\nInstall {self.service_name} to run examples!!!{Color.END}')
 
         return self.tool_info
-
-    def get_tool_info(self, tool):
-        if tool not in self.tools_info:
-            return
-        return self.tools_info[tool]
 
     def run_example(self, example_ind):
         self.example = self.tool_info["examples"][int(example_ind) - 1]
@@ -103,27 +98,43 @@ class Eg:
 def print_help():
     print("TODO HELP")
 
-def search_input(default = None):
-    res =input(f'Search for tool or service{" (" + default + ")" if default else ""}: ')
+def get_user_input_search(default = None):
+    default_value_string = ""
+    if default:
+        default_value_string = f' ({default})'
+
+    res =input(f'Search for tool or service{default_value_string}: ')
     print()
     return res
 
-def tool_input():
-    res = input("\nEnter tool index: ")
-    print()
-    return res
+def get_user_input_tool_selection(max_ind):
+    user_input = "placeholder"
+    while user_input and not is_valid_digit_option(user_input, max_ind):
+        user_input = input("\nEnter tool index: ")
+    return user_input
 
-def example_input(max_ind):
-    example_ind = str(-1)
-    while example_ind and (not example_ind.isdigit() or int(example_ind) > max_ind or int(example_ind) <= 0):
-        example_ind = input("\nEnter the index of the example to run: ")
-    return example_ind
+def get_user_input_example_selection(max_ind):
+    user_input = "placeholder"
+    while user_input and not is_valid_digit_option(user_input, max_ind):
+        user_input = input("\nEnter index of the example to run (or enter to go back): ")
+    return user_input
 
-def main():
+def is_valid_digit_option(user_input, max_option_value):
+    if not user_input.isdigit():
+        return False
+
+    if int(user_input) > max_option_value or int(user_input) < 1:
+        return False
+
+    return True;
+
+def banner():
     print(f'{Color.BOLD}\n----------------{Color.END}')
     print(f'------ {Color.BOLD}eg{Color.END} ------')
     print(f'{Color.BOLD}----------------\n{Color.END}')
 
+def main():
+    banner()
     if (len(sys.argv) > 2):
         print_help()
         return
@@ -133,57 +144,56 @@ def main():
         search = sys.argv[1]
 
     eg = Eg()
-    exact_match = False
+    search_exact_match = False
     while True:
-        found_tools = []
-        tool_ind = None
-        exact_match = False
+        search_results = []
+        selected_tool = 0
+        search_exact_match = False
         while not search:
-            search = search_input()
+            search = get_user_input_search()
 
-        found_tools = eg.print_tools_per_keyword(search)
+        search_results = eg.print_tools_per_keyword(search)
 
-        if len(found_tools) == 0:
+        if len(search_results) == 0:
             search = None
             continue
 
-        # Tool selection. If the search produced just an exact match
-        # select it automatically
-        if len(found_tools) == 1 or found_tools[0].get("exact_match") == True:
-            exact_match = True
-            tool_ind = 1
+        if len(search_results) == 1 and search_results[0].get("exact_match"):
+            search_exact_match = True
         else:
-            tool_ind = tool_input()
-            if tool_ind:
-                while tool_ind and (not tool_ind.isdigit() or int(tool_ind) > len(found_tools)):
-                    tool_ind = tool_input()
-                    if not tool_ind:
-                        continue
+            user_input_tool_selection = get_user_input_tool_selection(len(search_results))
 
-        if not tool_ind:
-            old_search = search
-            search = search_input(old_search)
-            if not search:
-               search = old_search
-            continue
+            if not user_input_tool_selection:
+                search = None
+                continue
 
-        on_examples = True
-        tool = eg.print_tool_info(int(tool_ind))
-        while on_examples:
+            selected_tool_index = int(user_input_tool_selection)
+            selected_tool = search_results[selected_tool_index - 1]
+
+        # if not selected_tool_index:
+        #     old_search = search
+        #     search = search_input(old_search)
+        #     if not search:
+        #        search = old_search
+        #     continue
+
+        while True:
+            tool = eg.print_tool_info(int(selected_tool_index))
             if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
-                if exact_match:
+                if search_exact_match:
                     search = None
-                on_examples = False
-                continue
+                break
 
-            example_ind = example_input(len(tool.get("examples")))
-            if not example_ind:
-                on_examples = False
-                if exact_match:
+            user_input_example_selection = get_user_input_example_selection(len(tool.get("examples")))
+            print("hola" + user_input_example_selection)
+            if not user_input_example_selection:
+                if search_exact_match:
                     search = None
-                continue
-            print(f'\n{Color.BOLD}{tool.get("examples")[int(example_ind)-1].get("command")}{Color.END}')
-            eg.run_example(example_ind)
+                print("breeeak:")
+                break
+
+            print(f'\n{Color.BOLD}{tool.get("examples")[int(user_input_example_selection)-1].get("command")}{Color.END}')
+            eg.run_example(user_input_example_selection)
 
 if __name__ == '__main__':
     try:
