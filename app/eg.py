@@ -139,7 +139,7 @@ def main():
             continue
 
         # Tool selection. If the search produced just an exact match
-        # don't ask for tool selection and display the matches examples
+        # select it automatically
         if len(found_tools) == 1 or found_tools[0].get("exact_match") == True:
             exact_match = True
             tool_ind = 1
