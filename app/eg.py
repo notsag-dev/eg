@@ -39,9 +39,13 @@ class Eg:
         search_exact_match = self.tools_info.get(keyword)
         if (search_exact_match):
             search_exact_match.update({ "exact_match": True });
+
         search_matches_list = self.search_tools_per_keyword(keyword)
+
         if search_exact_match == None and len(search_matches_list) == 0:
             print(f'{Color.YELLOW}No tools found for keyword {keyword}\n{Color.END}')
+            self.search = None
+            self.search_results = []
             return []
 
         if len(search_matches_list) == 0 and search_exact_match:
@@ -100,9 +104,13 @@ class Eg:
         print(f'{Color.BOLD}\n${Color.END} {command}')
         os.system(command)
 
-    def execute_search_state(self, search):
+    def execute_search_state(self, initial_search):
+        search = initial_search
+        if (self.search):
+            search = self.search
         while not search:
             search = get_user_input_search()
+        self.search = search
         self.search_results = self.print_tools_per_keyword(search)
         return self.search_results
 
@@ -150,7 +158,8 @@ def get_user_input_search(default = None):
         default_value_string = f' ({default})'
 
     res =input(f'Search for tool or service{default_value_string}: ')
-    print()
+    if res:
+        print()
     return res
 
 def get_user_input_tool_selection(max_ind):
@@ -191,12 +200,7 @@ def main():
         search = sys.argv[1]
 
     eg = Eg()
-    search_exact_match = False
     while True:
-        search_results = []
-        selected_tool = 0
-        search_exact_match = False
-        
         search_results = eg.execute_search_state(search)
 
         if len(search_results) == 0:
