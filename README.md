@@ -13,7 +13,6 @@ There is no need for installing any extra tools. I would recommend, though, to a
 `alias eg="python3 /path/to/eg/repo/app/eg.py"`
 
 ## Use
-
 Print help:
 ```
 $ eg -h
@@ -34,9 +33,6 @@ $ eg -h
         # Access the interactive app
         python eg.py
 ```
-
-Short demo:
-![eg demo](https://i.imgur.com/8hXpt8n.gif)
 
 ## Licence
 GPL-3.0
