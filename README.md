@@ -36,7 +36,7 @@ $ eg -h
 ```
 
 Short demo:
-![eg demo](https://imgur.com/8hXpt8n)
+![eg demo](https://i.imgur.com/8hXpt8n.gif)
 
 ## Licence
 GPL-3.0
