@@ -48,7 +48,7 @@ class Eg:
             self.search_results = []
             return []
 
-        if len(search_matches_list) == 0 and search_exact_match:
+        if search_exact_match and len(search_matches_list) == 0:
             self.tools_result_list = [search_exact_match]
             return self.tools_result_list
 
