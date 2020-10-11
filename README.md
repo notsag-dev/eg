@@ -1,5 +1,5 @@
 # eg
-Interactive tool to search and run cheat-sheet examples.
+Interactive tool to quickly search and run cheat sheet examples.
 
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
@@ -33,6 +33,9 @@ $ eg -h
         # Access the interactive app
         python eg.py
 ```
+
+## Contributing
+Feel free to add new cheat sheet examples to `app/tools_info.json` which serves as cheat sheet db.
 
 ## Licence
 GPL-3.0
