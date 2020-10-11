@@ -140,7 +140,10 @@ class Eg:
                     self.search = None
                 return 
 
-            user_input_example_selection = get_user_input_index_selection(len(tool.get("examples")), "\nEnter index of the example to run (or enter to go back): ")
+            user_input_example_selection = get_user_input_index_selection( \
+                len(tool.get("examples")), \
+                "\nEnter index of the example to run (or enter to go back): " \
+            )
             if not user_input_example_selection:
                 if self.search_exact_match:
                     self.search = None
@@ -162,18 +165,6 @@ def get_user_input_search(default = None):
         print()
     return res
 
-# def get_user_input_tool_selection(max_ind):
-#     user_input = "placeholder"
-#     while user_input and not is_valid_digit_option(user_input, max_ind):
-#         user_input = input("\nEnter tool index: ")
-#     return user_input
-# 
-# def get_user_input_example_selection(max_ind):
-#     user_input = "placeholder"
-#     while user_input and not is_valid_digit_option(user_input, max_ind):
-#         user_input = input("\nEnter index of the example to run (or enter to go back): ")
-#     return user_input
-
 def get_user_input_index_selection(max_ind, message):
     user_input = "placeholder"
     while user_input and not is_valid_digit_option(user_input, max_ind):
@@ -184,10 +175,8 @@ def get_user_input_index_selection(max_ind, message):
 def is_valid_digit_option(user_input, max_option_value):
     if not user_input.isdigit():
         return False
-
     if int(user_input) > max_option_value or int(user_input) < 1:
         return False
-
     return True;
 
 def banner():
