@@ -1,5 +1,5 @@
 # eg
-Search for cli tools and run cheat-sheet examples. 
+Interactive tool to search and run cheat-sheet examples.
 
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
