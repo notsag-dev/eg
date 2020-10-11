@@ -120,7 +120,7 @@ class Eg:
         if len(self.search_results) == 1 and self.search_results[0].get("exact_match"):
             self.search_exact_match = True
         else:
-            user_input_tool_selection = get_user_input_tool_selection(len(self.search_results))
+            user_input_tool_selection = get_user_input_index_selection(len(self.search_results), "\nEnter tool index: ")
 
             if not user_input_tool_selection:
                 self.search = None
@@ -140,7 +140,7 @@ class Eg:
                     self.search = None
                 return 
 
-            user_input_example_selection = get_user_input_example_selection(len(tool.get("examples")))
+            user_input_example_selection = get_user_input_index_selection(len(tool.get("examples")), "\nEnter index of the example to run (or enter to go back): ")
             if not user_input_example_selection:
                 if self.search_exact_match:
                     self.search = None
@@ -162,17 +162,24 @@ def get_user_input_search(default = None):
         print()
     return res
 
-def get_user_input_tool_selection(max_ind):
+# def get_user_input_tool_selection(max_ind):
+#     user_input = "placeholder"
+#     while user_input and not is_valid_digit_option(user_input, max_ind):
+#         user_input = input("\nEnter tool index: ")
+#     return user_input
+# 
+# def get_user_input_example_selection(max_ind):
+#     user_input = "placeholder"
+#     while user_input and not is_valid_digit_option(user_input, max_ind):
+#         user_input = input("\nEnter index of the example to run (or enter to go back): ")
+#     return user_input
+
+def get_user_input_index_selection(max_ind, message):
     user_input = "placeholder"
     while user_input and not is_valid_digit_option(user_input, max_ind):
         user_input = input("\nEnter tool index: ")
     return user_input
 
-def get_user_input_example_selection(max_ind):
-    user_input = "placeholder"
-    while user_input and not is_valid_digit_option(user_input, max_ind):
-        user_input = input("\nEnter index of the example to run (or enter to go back): ")
-    return user_input
 
 def is_valid_digit_option(user_input, max_option_value):
     if not user_input.isdigit():
