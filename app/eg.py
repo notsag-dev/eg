@@ -46,7 +46,7 @@ class Eg:
         if exact_match:
             search_matches_list = [exact_match] + search_matches_list
 
-        print(f'{Color.BOLD}\nResults for {keyword}:\n{Color.END}')
+        print(f'{Color.BOLD}Results for {keyword}:\n{Color.END}')
         sorted_tool_info_list = sorted(search_matches_list, key=lambda t: t["available"], reverse = True)
         for ind, tool in enumerate(sorted_tool_info_list):
             print(f'{ind + 1}) {Color.GREEN if tool.get("available") else Color.RED}{tool.get("name")}{Color.END}: {tool.get("description")}')
@@ -62,7 +62,7 @@ class Eg:
             print(f'{Color.YELLOW}\nNo examples found for {self.service_name}!!!\n{Color.END}')
             return None
 
-        print(f'{Color.BOLD}\nExamples for {self.service_name}:\n{Color.END}')
+        print(f'{Color.BOLD}Examples for {self.service_name}:\n{Color.END}')
         for ind, example in enumerate(self.tool_info["examples"]):
             print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
             if example.get("description"):
@@ -84,9 +84,8 @@ class Eg:
         self.example = self.tool_info["examples"][int(example_ind) - 1]
         command = self.example["command"]
         param_pattern = '\{\{(.*?)\}\}'
-        params_with_duplicates = re.findall(param_pattern, command)
-        params = list(set(params_with_duplicates))
-        print(f'{Color.BOLD}\nSet parameters:\n{Color.END}')
+        params = re.findall(param_pattern, command)
+        print(f'{Color.BOLD}\nPlease set parameters\n{Color.END}')
         param_values = []
         for param in params:
             cached = None
@@ -105,13 +104,20 @@ def print_help():
     print("TODO HELP")
 
 def search_input(default = None):
-    return input(f'Search for tool or service{" (" + default + ")" if default else ""}: ')
+    res =input(f'Search for tool or service{" (" + default + ")" if default else ""}: ')
+    print()
+    return res
 
 def tool_input():
-    return input("\nEnter tool index: ")
+    res = input("\nEnter tool index: ")
+    print()
+    return res
 
-def example_input():
-    return input("\nEnter the index of the example to run: ")
+def example_input(max_ind):
+    example_ind = str(-1)
+    while example_ind and (not example_ind.isdigit() or int(example_ind) > max_ind or int(example_ind) <= 0):
+        example_ind = input("\nEnter the index of the example to run: ")
+    return example_ind
 
 def main():
     print(f'{Color.BOLD}\n----------------{Color.END}')
@@ -162,21 +168,21 @@ def main():
             continue
 
         on_examples = True
+        tool = eg.print_tool_info(int(tool_ind))
         while on_examples:
-            tool = eg.print_tool_info(int(tool_ind))
             if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
                 if exact_match:
                     search = None
                 on_examples = False
                 continue
 
-            example_ind = example_input()
+            example_ind = example_input(len(tool.get("examples")))
             if not example_ind:
                 on_examples = False
                 if exact_match:
                     search = None
                 continue
-
+            print(f'\n{Color.BOLD}{tool.get("examples")[int(example_ind)-1].get("command")}{Color.END}')
             eg.run_example(example_ind)
 
 if __name__ == '__main__':
