@@ -41,6 +41,65 @@ The examples may have parameters which will be asked for when executed. Add para
 
 `find . -name {{keyword}}`
 
+### Execution example
+Search for tools that match the dns keyword:
+```
+$ eg dns
+
+----------------
+------ eg ------
+----------------
+
+Results for dns:
+
+1) nslookup: Query Internet name servers interactively
+2) dig: DNS lookup utility
+3) dnsrecon: DNS Enumeration and Scanning Tool
+4) dnsmap: DNS Network Mapper
+
+Enter tool index (or enter to go back):
+```
+Now select one of the tools to list their cheat sheet examples:
+```
+Enter tool index (or enter to go back): 1
+Examples for nslookup:
+
+1 - Query A records
+nslookup {{RHOST}}
+-------
+2 - Query NS records
+nslookup -type=ns {{RHOST}}
+-------
+3 - Query MX records
+nslookup -type=mx {{RHOST}}
+-------
+4 - Query all available DNS records
+nslookup -type=any {{RHOST}}
+-------
+
+Enter index of the example to run (or enter to go back):
+```
+
+Select the example to run, set parameters and run:
+
+```
+Enter index of the example to run (or enter to go back): 1
+
+nslookup {{RHOST}}
+
+Please set parameters
+
+RHOST: google.com
+
+$ nslookup google.com
+Server:		192.168.1.1
+Address:	192.168.1.1#53
+
+Non-authoritative answer:
+Name:	google.com
+Address: 172.217.172.46
+```
+
 ## Contributing
 Feel free to add new cheat sheet examples to `app/tools_info.json` which serves as cheat sheet db.
 
