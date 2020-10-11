@@ -36,13 +36,13 @@ $ eg -h
 
     EXAMPLES
         # Search for tools related to dns
-        python eg.py dns
+        eg dns
 
         # Directly access nmap examples
-        python eg.py nmap
+        eg nmap
 
         # Access the interactive app
-        python eg.py
+        eg
 ```
 
 ### Add new cheat sheet examples
