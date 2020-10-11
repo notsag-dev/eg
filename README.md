@@ -2,9 +2,9 @@
 Interactive tool to quickly search and run cheat sheet examples.
 
 ## Motivation
-The main motivations for creating this projects were:
+The main motivations for creating this projects are:
 - Getting hints about cli tools that are not used often enough to remember their basic use
-- Quickly executing repetitive commands
+- Quickly executing repetitive commands by caching command parameters (eg. IPs or host names)
 - Searching for tools to interact with particular services and protocols (eg. listing all tools to interact/get info from dns or http servers)
 - Solve CTF challenges quicker while also learning how to use the involved tools, as opposed to automated tools that just run a bunch of scripts without even asking
 - Enhancing my command line productivity in general
