@@ -1,5 +1,5 @@
 # eg
-Interactive tool to quickly search and run cheat sheet examples.
+(Work in progress) Interactive tool to quickly search and run cheat sheet examples.
 
 ## Motivation
 The main motivations for creating this project are:
