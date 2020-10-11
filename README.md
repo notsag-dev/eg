@@ -41,7 +41,7 @@ The examples may have parameters which will be asked for when executed. Add para
 
 `find . -name {{keyword}}`
 
-### Execution example
+### Example: search by keyword
 Search for tools that match the dns keyword:
 ```
 $ eg dns
@@ -98,6 +98,27 @@ Address:	192.168.1.1#53
 Non-authoritative answer:
 Name:	google.com
 Address: 172.217.172.46
+```
+
+### Example searching by tool name
+When searching by tool name the tool selection is done automatically:
+```
+$ eg nmap
+
+----------------
+------ eg ------
+----------------
+
+Examples for nmap:
+
+1 - Aggressive: Standard scripts, OS and versions detection
+nmap -A {{RHOST}}
+-------
+2 - Scan all 65535 ports
+nmap -p- {{RHOST}}
+-------
+
+Enter index of the example to run (or enter to go back):
 ```
 
 ## Contributing
