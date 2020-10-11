@@ -1,6 +1,14 @@
 # eg
 Interactive tool to quickly search and run cheat sheet examples.
 
+## Motivation
+The main motivations for creating this projects were:
+- Getting hints about cli tools that are not used often enough to remember their basic use
+- Quickly executing repetitive commands
+- Searching for tools to interact with particular services and protocols (eg. listing all tools to interact/get info from dns or http servers)
+- Solve CTF challenges quicker while also learning how to use the involved tools, as opposed to automated tools that just run a bunch of scripts without even asking
+- Enhancing my command line productivity in general
+
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
 
