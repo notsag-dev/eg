@@ -101,7 +101,7 @@ Address: 172.217.172.46
 ```
 
 ## Contributing
-Feel free to add new cheat sheet examples to `app/tools_info.json` which serves as cheat sheet db.
+Feel free to add new cheat sheet examples to `app/tools_info.json` which serves as cheat sheet db. Trying to keep command parameters names consistent is key as parameter values are cached and used as default for executing other commands during the same session.
 
 ## Licence
 GPL-3.0
