@@ -14,8 +14,9 @@ class Eg:
 
         self.search = None
         self.search_results = []
-        self.selected_tool = 0
         self.search_exact_match = False
+        self.selected_tool = None
+        self.selected_tool_index = 0
      
     def load_tools_info(self):
         result = {}
@@ -120,7 +121,7 @@ class Eg:
         if len(self.search_results) == 1 and self.search_results[0].get("exact_match"):
             self.search_exact_match = True
         else:
-            user_input_tool_selection = get_user_input_index_selection(len(self.search_results), "\nEnter tool index: ")
+            user_input_tool_selection = get_user_input_index_selection(len(self.search_results), "\nEnter tool index (or enter to go back): ")
 
             if not user_input_tool_selection:
                 self.search = None
@@ -185,7 +186,7 @@ def get_user_input_search(default = None):
 def get_user_input_index_selection(max_ind, message):
     user_input = "placeholder"
     while user_input and not is_valid_digit_option(user_input, max_ind):
-        user_input = input("\nEnter tool index: ")
+        user_input = input(message)
     return user_input
 
 
