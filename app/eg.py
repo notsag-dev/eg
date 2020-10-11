@@ -102,7 +102,7 @@ class Eg:
             if not param_value and cached:
                 param_value = cached
             command = command.replace(f'{{{{{param}}}}}', param_value)
-        print(f'{Color.BOLD}\n${Color.END} {command}')
+        print(f'{Color.BOLD}\n$ {command}{Color.END}')
         os.system(command)
 
     def execute_search_state(self, initial_search):
@@ -121,7 +121,9 @@ class Eg:
         if len(self.search_results) == 1 and self.search_results[0].get("exact_match"):
             self.search_exact_match = True
         else:
-            user_input_tool_selection = get_user_input_index_selection(len(self.search_results), "\nEnter tool index (or enter to go back): ")
+            user_input_tool_selection = get_user_input_index_selection( \
+                    len(self.search_results), \
+                    "\nEnter tool index (or enter to go back): ")
 
             if not user_input_tool_selection:
                 self.search = None
@@ -213,13 +215,14 @@ def main():
 
     banner()
 
-    search = None
+    initial_search = None
     if len(sys.argv) == 2:
-        search = sys.argv[1]
+        initial_search = sys.argv[1]
 
     eg = Eg()
     while True:
-        search_results = eg.execute_search_state(search)
+        search_results = eg.execute_search_state(initial_search)
+        initial_search = None
 
         if len(search_results) == 0:
             search = None
