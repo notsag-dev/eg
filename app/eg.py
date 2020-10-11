@@ -11,6 +11,11 @@ class Eg:
         self.tools_info = self.load_tools_info()
         self.tools_per_keyword = get_tools_per_keyword(self.tools_info)
         self.params_cache = {}
+
+        self.search = None
+        self.search_results = []
+        self.selected_tool = 0
+        self.search_exact_match = False
      
     def load_tools_info(self):
         with open('tools_info.json') as tools_info:
@@ -94,6 +99,47 @@ class Eg:
             command = command.replace(f'{{{{{param}}}}}', param_value)
         print(f'{Color.BOLD}\n${Color.END} {command}')
         os.system(command)
+
+    def execute_search_state(self, search):
+        while not search:
+            search = get_user_input_search()
+        self.search_results = self.print_tools_per_keyword(search)
+        return self.search_results
+
+    def execute_tool_selection_state(self):
+        go_back_to_search = False
+
+        if len(self.search_results) == 1 and self.search_results[0].get("exact_match"):
+            self.search_exact_match = True
+        else:
+            user_input_tool_selection = get_user_input_tool_selection(len(self.search_results))
+
+            if not user_input_tool_selection:
+                self.search = None
+                go_back_to_search = True
+                return { "go_back_to_search": go_back_to_search }
+
+            self.selected_tool_index = int(user_input_tool_selection)
+            self.selected_tool = self.search_results[self.selected_tool_index - 1]
+
+        return { "go_back_to_search": go_back_to_search }
+
+    def execute_example_selection_state(self):
+        while True:
+            tool = self.print_tool_info(int(self.selected_tool_index))
+            if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
+                if self.search_exact_match:
+                    self.search = None
+                return 
+
+            user_input_example_selection = get_user_input_example_selection(len(tool.get("examples")))
+            if not user_input_example_selection:
+                if self.search_exact_match:
+                    self.search = None
+                return 
+
+            print(f'\n{Color.BOLD}{tool.get("examples")[int(user_input_example_selection)-1].get("command")}{Color.END}')
+            self.run_example(user_input_example_selection)
     
 def print_help():
     print("TODO HELP")
@@ -135,6 +181,7 @@ def banner():
 
 def main():
     banner()
+
     if (len(sys.argv) > 2):
         print_help()
         return
@@ -149,51 +196,18 @@ def main():
         search_results = []
         selected_tool = 0
         search_exact_match = False
-        while not search:
-            search = get_user_input_search()
-
-        search_results = eg.print_tools_per_keyword(search)
+        
+        search_results = eg.execute_search_state(search)
 
         if len(search_results) == 0:
             search = None
             continue
 
-        if len(search_results) == 1 and search_results[0].get("exact_match"):
-            search_exact_match = True
-        else:
-            user_input_tool_selection = get_user_input_tool_selection(len(search_results))
+        tool_selection_result = eg.execute_tool_selection_state()
+        if tool_selection_result.get("go_back_to_search"):
+            continue
 
-            if not user_input_tool_selection:
-                search = None
-                continue
-
-            selected_tool_index = int(user_input_tool_selection)
-            selected_tool = search_results[selected_tool_index - 1]
-
-        # if not selected_tool_index:
-        #     old_search = search
-        #     search = search_input(old_search)
-        #     if not search:
-        #        search = old_search
-        #     continue
-
-        while True:
-            tool = eg.print_tool_info(int(selected_tool_index))
-            if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
-                if search_exact_match:
-                    search = None
-                break
-
-            user_input_example_selection = get_user_input_example_selection(len(tool.get("examples")))
-            print("hola" + user_input_example_selection)
-            if not user_input_example_selection:
-                if search_exact_match:
-                    search = None
-                print("breeeak:")
-                break
-
-            print(f'\n{Color.BOLD}{tool.get("examples")[int(user_input_example_selection)-1].get("command")}{Color.END}')
-            eg.run_example(user_input_example_selection)
+        eg.execute_example_selection_state()
 
 if __name__ == '__main__':
     try:
