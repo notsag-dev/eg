@@ -18,13 +18,13 @@ class Eg:
         self.search_exact_match = False
      
     def load_tools_info(self):
+        result = {}
         with open('tools_info.json') as tools_info:
             tools_info = json.load(tools_info)
-            result = {}
             for tool_name in tools_info:
                 available = which(tool_name) is not None
                 result[tool_name] = { **tools_info.get(tool_name), "available": available, "name": tool_name }
-            return result
+        return result
         
     def search_tools_per_keyword(self, keyword):
         if keyword not in self.tools_per_keyword:
