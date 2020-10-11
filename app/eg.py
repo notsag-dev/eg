@@ -15,43 +15,54 @@ class Eg:
     def load_tools_info(self):
         with open('tools_info.json') as tools_info:
             tools_info = json.load(tools_info)
+            result = {}
             for tool_name in tools_info:
-                tools_info.get(tool_name)["available"] = which(tool_name) is not None
-            return tools_info
+                available = which(tool_name) is not None
+                result[tool_name] = { **tools_info.get(tool_name), "available": available, "name": tool_name }
+            return result
         
-    def get_tools_per_keyword(self, service):
-        if service not in self.tools_per_keyword:
-            return
-        return self.tools_per_keyword[service]
+    def search_tools_per_keyword(self, keyword):
+        if keyword not in self.tools_per_keyword:
+            return []
+        tool_names = self.tools_per_keyword[keyword]
+        result = []
+        for tool_name in tool_names:
+            result.append(self.tools_info.get(tool_name));
+        return result;
 
     def print_tools_per_keyword(self, keyword):
-        matches_list = self.get_tools_per_keyword(keyword)
-        if matches_list is None:
-            print(f'{Color.YELLOW}\nOuch! No tools found for keyword {keyword}\n{Color.END}')
-            return None
+        exact_match = self.tools_info.get(keyword)
+        if (exact_match):
+            exact_match.update({ "exact_match": True });
+        search_matches_list = self.search_tools_per_keyword(keyword)
+        if exact_match == None and len(search_matches_list) == 0:
+            print(f'{Color.YELLOW}\nNo tools found for keyword {keyword}\n{Color.END}')
+            return []
+
+        if len(search_matches_list) == 0 and exact_match:
+            self.tools_result_list = [exact_match]
+            return self.tools_result_list
+
+        if exact_match:
+            search_matches_list = [exact_match] + search_matches_list
 
         print(f'{Color.BOLD}\nResults for {keyword}:{Color.END}')
-        tool_info_list = []
-        for tool_name in matches_list:
-            tool_info_list.append({
-                "name": tool_name,
-                **self.tools_info[tool_name],
-            });
-        sorted_tool_info_list = sorted(tool_info_list, key=lambda t: t["available"], reverse = True)
+        sorted_tool_info_list = sorted(search_matches_list, key=lambda t: t["available"], reverse = True)
         for ind, tool in enumerate(sorted_tool_info_list):
             print(f'{ind + 1}) {Color.GREEN if tool.get("available") else Color.RED}{tool.get("name")}{Color.END}: {tool.get("description")}')
         self.tools_result_list = sorted_tool_info_list
-        return self.tools_result_list
+
+        return sorted_tool_info_list
 
     def print_tool_info(self, tool_ind):
         self.tool_info = self.tools_result_list[tool_ind - 1]
         self.service_name = self.tool_info.get("name")
         examples = self.tool_info["examples"]
         if examples is None or len(examples) == 0:
-            print(f'{Color.YELLOW}No examples found for {self.service_name}!!!{Color.END}')
+            print(f'{Color.YELLOW}\nNo examples found for {self.service_name}!!!\n{Color.END}')
             return None
 
-        print(f'{Color.BOLD}Examples for {self.service_name}:\n{Color.END}')
+        print(f'{Color.BOLD}\nExamples for {self.service_name}:\n{Color.END}')
         for ind, example in enumerate(self.tool_info["examples"]):
             print(f'{Color.BOLD}{ind + 1} - {example["title"]} {Color.END}')
             if example.get("description"):
@@ -93,10 +104,19 @@ class Eg:
 def print_help():
     print("TODO HELP")
 
+def search_input(default = None):
+    return input(f'Search for tool or service{" (" + default + ")" if default else ""}: ')
+
+def tool_input():
+    return input("\nEnter tool index: ")
+
+def example_input():
+    return input("\nEnter the index of the example to run: ")
+
 def main():
-    print(f'{Color.BOLD}\n------------------------{Color.END}')
-    print(f'--- {Color.BOLD}eg {Color.END}by notsag-dev ---')
-    print(f'{Color.BOLD}------------------------{Color.END}')
+    print(f'{Color.BOLD}\n----------------{Color.END}')
+    print(f'------ {Color.BOLD}eg{Color.END} ------')
+    print(f'{Color.BOLD}----------------{Color.END}')
 
     if (len(sys.argv) != 2):
         print_help()
@@ -104,26 +124,36 @@ def main():
 
     search = sys.argv[1]
     eg = Eg()
-    tool_ind = None
+    exact_match = False
     while True:
+        found_tools = []
+        tool_ind = None
+        exact_match = False
+        while not search:
+            search = search_input()
+
         found_tools = eg.print_tools_per_keyword(search)
-        if not found_tools:
+
+        if len(found_tools) == 0:
             search = None
-            while not search:
-                search = input("Search for tool or service: ")
             continue
 
-        tool_ind = input("\nEnter tool index: ")
-        if tool_ind:
-            while not tool_ind.isdigit() or int(tool_ind) > len(found_tools):
-                tool_ind = input("\nEnter tool index: ")
-                if not tool_ind:
-                    continue
-        print()
+        # Tool selection. If the search produced just an exact match
+        # don't ask for tool selection and display the matches examples
+        if len(found_tools) == 1 or found_tools[0].get("exact_match") == True:
+            exact_match = True
+            tool_ind = 1
+        else:
+            tool_ind = tool_input()
+            if tool_ind:
+                while tool_ind and (not tool_ind.isdigit() or int(tool_ind) > len(found_tools)):
+                    tool_ind = tool_input()
+                    if not tool_ind:
+                        continue
 
         if not tool_ind:
             old_search = search
-            search = input(f'Search for tool or service{" (" + old_search + ")" if old_search else ""}: ')
+            search = search_input(old_search)
             if not search:
                search = old_search
             continue
@@ -132,12 +162,16 @@ def main():
         while on_examples:
             tool = eg.print_tool_info(int(tool_ind))
             if not tool or len(tool.get("examples")) == 0 or not tool.get("available"):
+                if exact_match:
+                    search = None
                 on_examples = False
                 continue
 
-            example_ind = input("\nEnter example to run: ")
+            example_ind = example_input()
             if not example_ind:
                 on_examples = False
+                if exact_match:
+                    search = None
                 continue
 
             eg.run_example(example_ind)
