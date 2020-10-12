@@ -54,10 +54,6 @@ Search for tools that match the dns keyword:
 ```
 $ eg dns
 
-----------------
------- eg ------
-----------------
-
 Results for dns:
 
 1) nslookup: Query Internet name servers interactively
@@ -112,10 +108,6 @@ Address: 172.217.172.46
 When searching by tool name the tool selection is done automatically:
 ```
 $ eg nmap
-
-----------------
------- eg ------
-----------------
 
 Examples for nmap:
 
