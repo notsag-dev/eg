@@ -10,9 +10,6 @@ The main motivations for creating this project are:
 - Enhancing command line productivity in general
 - Being able to automatically export command results to markdown format using a template (to do)
 
-## Hacktoberfest
-This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
-
 ## Dependencies
 The only dependency of this project is Python 3. It is true that for actually running cheat sheet examples the involved tools have to be installed, but as it would be a bit too intrusive, the script will just print installed tools in green and non-installed ones in red.
 
