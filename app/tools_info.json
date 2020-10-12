@@ -53,5 +53,52 @@
       }
     ],
     "keywords": ["net", "network", "networking", "map"]
+  },
+  "cut": {
+    "description": "Cut out selected portions of each line of a file",
+    "examples": [
+      {
+        "title": "Split file lines by comma and keep first field",
+        "command": "cut -f 1 -d \",\" {{FILE_PATH}}"
+      },
+      {
+        "title": "Split string by comma and keep first field",
+        "command": "echo \"{{STRING}}\" | cut -f 1 -d \",\""
+      },
+      {
+        "title": "Get user names from passwd file",
+        "command": "cut -d \":\" -f 1 /etc/passwd"
+      }
+    ],
+    "keywords": ["text", "edition"]
+  },
+  "grep": {
+    "description": "File pattern searcher",
+    "examples": [
+      {
+        "title": "Case-insensitive search in file (excluding binaries)",
+        "command": "grep -iI {{PATTERN}} {{FILE_PATH}}"
+      },
+      {
+        "title": "Recursive, case-insensitive search in current directory (excluding binaries)",
+        "command": "grep -riI {{PATTERN}} ."
+      }
+    ],
+    "keywords": ["text", "search", "regexp"]
+  },
+  "sed": {
+    "description": "Stream editor",
+    "examples": [],
+    "keywords": ["text", "stream", "edition", "editor"]
+  },
+  "awk": {
+    "description": "Pattern-directed scanning and processing language",
+    "examples": [
+      {
+      "title": "Print fields 1 and 3 of file separating lines by comma",
+      "command": "awk -F \",\" '{print $1, $3}' {{FILE_PATH}}"
+    }
+    ],
+    "keywords": ["text", "edition", "editor", "language"]
   }
 }
