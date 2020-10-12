@@ -20,7 +20,9 @@ class Eg:
      
     def load_tools_info(self):
         result = {}
-        with open('tools_info.json') as tools_info:
+        dirname = os.path.dirname(os.path.realpath(__file__))
+        full_path_tools_file = os.path.join(dirname, "tools_info.json")
+        with open(full_path_tools_file) as tools_info:
             tools_info = json.load(tools_info)
             for tool_name in tools_info:
                 available = which(tool_name) is not None
@@ -104,6 +106,7 @@ class Eg:
             command = command.replace(f'{{{{{param}}}}}', param_value)
         print(f'{Color.BOLD}\n$ {command}{Color.END}')
         os.system(command)
+        print()
 
     def execute_search_state(self, initial_search):
         search = initial_search
@@ -199,11 +202,6 @@ def is_valid_digit_option(user_input, max_option_value):
         return False
     return True;
 
-def banner():
-    print(f'{Color.BOLD}\n----------------{Color.END}')
-    print(f'------ {Color.BOLD}eg{Color.END} ------')
-    print(f'{Color.BOLD}----------------\n{Color.END}')
-
 def main():
     if (len(sys.argv) > 2):
         print_help()
@@ -212,8 +210,6 @@ def main():
     if ("--help" in sys.argv or "-h" in sys.argv):
         print_help()
         return
-
-    banner()
 
     initial_search = None
     if len(sys.argv) == 2:
