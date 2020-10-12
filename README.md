@@ -8,7 +8,7 @@ The main motivations for creating this project are:
 - Searching for tools to interact with particular services and protocols (eg. listing all tools to interact/get info from dns or http servers)
 - Solve CTF challenges quicker while also learning how to use the involved tools, as opposed to automated tools that just run a bunch of scripts without even asking the user
 - Enhancing command line productivity in general
-- Being able to automatically export the results of a set of command executions to markdown format (to do)
+- Being able to automatically export command results to markdown format using a template (to do)
 
 ## Hacktoberfest
 This project was created in the context of Hacktoberfest 2020 so that we can build its database together.
