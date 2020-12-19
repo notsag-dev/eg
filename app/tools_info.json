@@ -95,9 +95,20 @@
     "description": "Pattern-directed scanning and processing language",
     "examples": [
       {
-      "title": "Print fields 1 and 3 of file separating lines by comma",
-      "command": "awk -F \",\" '{print $1, $3}' {{FILE_PATH}}"
-    }
+        "title": "Print fields 1 and 3 taking comma as separator",
+        "description": "If input is \"hola,blabla,chau\" it will print \"hola chau\"",
+        "command": "awk -F \",\" '{print $1, $3}' {{FILE_PATH}}"
+      },
+      {
+        "title": "Print with manual custom separators",
+        "command": "echo \"hola,amigo\" | awk -F \",\" '{print $1 \" \" $2}'"
+      },
+      {
+        "title": "awk + printf for more advanced output",
+        "command": "echo \"hola,trash,como\" | awk -F \",\" '{printf(\"%s %s te va?\n\", $1, $3)}'"
+      }
+
+
     ],
     "keywords": ["text", "edition", "editor", "language"]
   }
